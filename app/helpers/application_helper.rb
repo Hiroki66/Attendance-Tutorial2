@@ -9,4 +9,12 @@ module ApplicationHelper
       page_name + " | " + base_title # 文字列を連結して返す
     end
   end
+  
+  def week_color(wday)
+    if wday == 0
+      return 'sun'
+    elsif wday == 6
+      return 'sat'
+    end
+  end
 end

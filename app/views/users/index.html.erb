@@ -1,7 +1,16 @@
 <% provide(:title, 'All Users') %>
-<h1>ユーザー一覧</h1>
+
+<h1><%= @text %></h1>
 
 <div class="col-md-10 col-md-offset-1">
+  <div class="search-form pull-right">
+    <%= form_with url: search_path, method: :get, local: true do |f| %>
+      <%= f.text_field :keyword, value: @keyword %>
+      <%= f.submit "検索", class:"btn-primary" %>
+    <% end %>
+  </div>
+
+  </div>
   <%= will_paginate %>
   <table class="table table-condensed table-hover" id="table-users">
     <thead>

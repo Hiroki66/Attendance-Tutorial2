@@ -4,12 +4,26 @@ class UsersController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info]
   before_action :set_one_month, only: :show
+  before_action :admin_or_correct_user, only: :show
+  
+  def attendances
+    Attendance.where(user_id: self.id)
+  end
 
   def index
     @users = User.paginate(page: params[:page])
+    @text = "ユーザー一覧"
+  end
+  
+  def search
+    @users = User.search(params[:keyword]).paginate(page: params[:page])
+    @keyword = params[:keyword]
+    @text = "検索結果"
+    render "index"
   end
 
   def show
+    @attendance = Attendance.find(params[:id])
     @worked_sum = @attendances.where.not(started_at: nil).count
   end
 
