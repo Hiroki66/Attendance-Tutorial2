@@ -8,10 +8,17 @@
 
 
 # coding: utf-8
-User.create!(name: "Test User",
-        email: "test@email.com",
+User.create!(name: "Boss",
+        email: "boss@email.com",
         password: "password",
-        password_confirmation: "password")
+        password_confirmation: "password",
+        boss: true)
+        
+User.create!(name: "Top",
+        email: "top@email.com",
+        password: "password",
+        password_confirmation: "password",
+        boss: true)
 
 
 User.create!(name: "Sample User",

@@ -22,23 +22,31 @@
 </div>
 <div>
   <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day), class: "btn btn-primary" %>
+  <%= link_to "CSV出力", "#", class: "btn btn-primary" %>
+  <br></br>
+  <%= link_to "勤怠修正ログ（承認済）", "#", class: "btn btn-primary" %>
 </div>
 <div>
   <table class="table table-bordered table-condensed table-hover"   id="table-attendances">
     <thead>
       <tr>
+        <th>残業申請</th>
         <th>日付</th>
         <th>曜日</th>
         <th>出社</th>
-        <th></th>
         <th>退社</th>
         <th>在社時間</th>
         <th>備考</th>
-       </tr>
+        <th>終了予定時間</th>
+        <th>時間外時間</th>
+        <th>業務処理内容</th>
+        <th>指示者確認&#12958;</th>
+      </tr>
     </thead>
     <tbody>
       <% @attendances.each do |day| %>
         <tr>
+          <td><%= link_to "残業申請", "#", class: "btn btn-primary" %></td>
           <td><%= l(day.worked_on, format: :short) %></td>
           <td class="<%= week_color(day.worked_on.wday) %>">
             <%= $days_of_the_week[day.worked_on.wday] %>
@@ -57,6 +65,8 @@
             <% end %>
           </td>
           <td><%= day.note %></td>
+          <td></td>
+          <td></td>
         </tr>
       <% end %>
     </tbody>
@@ -66,7 +76,10 @@
       <tr>
         <td colspan="2">総合勤務時間</td>
         <td colspan="2">累計在社時間</td>
-        <td colspan="2">所属長承認</td>
+        <td colspan="2">
+          所属長承認
+          <br></br>
+          <%= link_to "申請", "#", class: "btn btn-primary" %></td>
         <td rowspan="2"></td>
       </tr>
       <tr>

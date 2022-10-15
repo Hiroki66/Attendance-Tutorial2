@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   get 'search', to: 'users#search'
+  get 'working', to: 'users#working'
   
   resources :users do
     member do
@@ -15,5 +16,6 @@ Rails.application.routes.draw do
       patch 'attendances/update_one_month'
     end
     resources :attendances, only: :update
+    collection { post :import }
   end
 end

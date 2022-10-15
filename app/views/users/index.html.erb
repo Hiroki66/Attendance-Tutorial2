@@ -9,6 +9,11 @@
       <%= f.submit "検索", class:"btn-primary" %>
     <% end %>
   </div>
+  
+<%= form_tag import_users_path, multipart: true do %>
+  <%= file_field_tag :file, accept: '.csv' %>
+  <%= submit_tag "インポート", class: "btn-primary" %>
+<% end %>
 
   </div>
   <%= will_paginate %>

@@ -21,6 +21,11 @@ class UsersController < ApplicationController
     @text = "検索結果"
     render "index"
   end
+  
+  def working
+    @users = User.paginate(page: params[:page])
+    @text = "出勤中社員一覧"
+  end
 
   def show
     @attendance = Attendance.find(params[:id])
@@ -73,6 +78,11 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def import
+    User.import(params[:file])
+    redirect_to users_path
+  end
+  
 private
 
   def user_params
@@ -82,4 +92,5 @@ private
   def basic_info_params
     params.require(:user).permit(:department, :basic_time, :work_time)
   end
+  
 end
