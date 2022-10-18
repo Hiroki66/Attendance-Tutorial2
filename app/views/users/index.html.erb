@@ -1,4 +1,6 @@
 <% provide(:title, 'All Users') %>
+<% provide(:class_text, 'edit') %>
+<% provide(:button_text, '編集する') %>
 
 <h1><%= @text %></h1>
 
@@ -10,51 +12,71 @@
     <% end %>
   </div>
   
-<%= form_tag import_users_path, multipart: true do %>
-  <%= file_field_tag :file, accept: '.csv' %>
-  <%= submit_tag "インポート", class: "btn-primary" %>
-<% end %>
+  <%= form_tag import_users_path, multipart: true do %>
+    <%= file_field_tag :file, accept: '.csv' %>
+    <%= submit_tag "インポート", class: "btn-primary" %>
+  <% end %>
 
-  </div>
-  <%= will_paginate %>
-  <table class="table table-condensed table-hover" id="table-users">
-    <thead>
-      <tr>
-        <th><%= User.human_attribute_name :name %></th>
-        <th class="center"><%= User.human_attribute_name :department %></th>
-        <% if current_user.admin? %>
-          <th class="center"><%= User.human_attribute_name :basic_time %></th>
-          <th class="center"><%= User.human_attribute_name :work_time %></th>
-        <% end %>
-        <th></th>
-      </tr>
-    </thead>
-    
-    <% @users.each do |user| %>
-      <tr>
-        <td>
-          <% if current_user.admin? %>
+</div>
+<%= will_paginate %>
+<table class="table table-condensed table-hover" id="table-users">
+  <% @users.each do |user| %>
+  <thead>
+    <tr>
+      <th><% if current_user.admin? %>
             <%= link_to user.name, user %>
           <% else %>
             <%= user.name %>
           <% end %>
-        </td>
-        <td class="center"><%= user.department.present? ? user.department : "未所属" %></td>
-        <% if current_user.admin? %>
-          <td class="center"><%= format_basic_info(user.basic_time) %></td>
-          <td class="center"><%= format_basic_info(user.work_time) %></td>
+        </th>
+    </tr>
+  </thead>
+  
+    <tr>
+      <td>
+       
+      </td>
+      <td class="center">
+        <% if current_user.admin && !current_user?(user) %>
+          <%= link_to "削除", user, method: :delete,
+              data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
+          <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#user">編集</button>
+          <div id="user" class="collapse">
+            <%= form_with(model: user, local: true) do |f| %>
+
+              <%= f.label :name, class: "label-#{yield(:class_text)}" %>
+              <%= f.text_field :name, class: "form-control" %>
+            
+              <%= f.label :email, class: "label-#{yield(:class_text)}" %>
+              <%= f.email_field :email, class: "form-control" %>
+              
+              <%= f.label :department, class: "label-#{yield(:class_text)}" %>
+              <%= f.text_field :affiliation, class: "form-control" %>
+              
+              <%= f.label :employee_number, class: "label-#{yield(:class_text)}" %>
+              <%= f.text_field :employee_number, class: "form-control" %>
+              
+              <%= f.label :uid, class: "label-#{yield(:class_text)}" %>
+              <%= f.text_field :uid, class: "form-control" %>
+            
+              <%= f.label :password,class: "label-#{yield(:class_text)}" %>
+              <%= f.password_field :password, class: "form-control" %>
+              
+              <%= f.label :basic_time, class: "label-#{yield(:class_text)}" %>
+              <%= f.time_field :basic_time, class: "form-control" %>
+
+              <%= f.label :work_time, class: "label-#{yield(:class_text)}" %>
+              <%= f.time_field :work_time, class: "form-control" %>
+            
+              <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
+            <% end %>
+          </div>
         <% end %>
-        <td class="center">
-          <% if current_user.admin && !current_user?(user) %>
-            <%= link_to "基本情報編集", edit_basic_info_user_path(user), remote: true, class: "btn btn-success" %>
-            <%= link_to "削除", user, method: :delete,
-                data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </table>
-  <%= will_paginate %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate %>
 </div>
 
 <!--モーダルウィンドウ表示-->
