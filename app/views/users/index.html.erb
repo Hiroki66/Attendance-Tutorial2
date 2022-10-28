@@ -23,53 +23,49 @@
   <% @users.each do |user| %>
   <thead>
     <tr>
-      <th><% if current_user.admin? %>
-            <%= link_to user.name, user %>
-          <% else %>
-            <%= user.name %>
-          <% end %>
-        </th>
+      <th>
+        <%= user.name %>
+      </th>
     </tr>
   </thead>
   
     <tr>
-      <td>
-       
-      </td>
-      <td class="center">
+      <td class="btn-group">
         <% if current_user.admin && !current_user?(user) %>
           <%= link_to "削除", user, method: :delete,
-              data: { confirm: "削除してよろしいですか？" }, class: "btn btn-danger" %>
-          <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#user">編集</button>
-          <div id="user" class="collapse">
-            <%= form_with(model: user, local: true) do |f| %>
+              data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary" %>
+  <br></br>
+        <button class="btn btn-primary btn-lg" data-toggle="collapse" data-target="#user-<%= user.id %>">編集</button>
+        <div id="user-<%= user.id %>" class="collapse">
+          <%= form_with(model: user, local: true) do |f| %>
 
-              <%= f.label :name, class: "label-#{yield(:class_text)}" %>
-              <%= f.text_field :name, class: "form-control" %>
+            <%= f.label :name, class: "label-#{yield(:class_text)}" %>
+            <%= f.text_field :name, class: "form-control" %>
+          
+            <%= f.label :email, class: "label-#{yield(:class_text)}" %>
+            <%= f.email_field :email, class: "form-control" %>
             
-              <%= f.label :email, class: "label-#{yield(:class_text)}" %>
-              <%= f.email_field :email, class: "form-control" %>
-              
-              <%= f.label :department, class: "label-#{yield(:class_text)}" %>
-              <%= f.text_field :affiliation, class: "form-control" %>
-              
-              <%= f.label :employee_number, class: "label-#{yield(:class_text)}" %>
-              <%= f.text_field :employee_number, class: "form-control" %>
-              
-              <%= f.label :uid, class: "label-#{yield(:class_text)}" %>
-              <%= f.text_field :uid, class: "form-control" %>
+            <%= f.label :department, class: "label-#{yield(:class_text)}" %>
+            <%= f.text_field :affiliation, class: "form-control" %>
             
-              <%= f.label :password,class: "label-#{yield(:class_text)}" %>
-              <%= f.password_field :password, class: "form-control" %>
-              
-              <%= f.label :basic_time, class: "label-#{yield(:class_text)}" %>
-              <%= f.time_field :basic_time, class: "form-control" %>
+            <%= f.label :employee_number, class: "label-#{yield(:class_text)}" %>
+            <%= f.text_field :employee_number, class: "form-control" %>
+            
+            <%= f.label :uid, class: "label-#{yield(:class_text)}" %>
+            <%= f.text_field :uid, class: "form-control" %>
+          
+            <%= f.label :password,class: "label-#{yield(:class_text)}" %>
+            <%= f.password_field :password, class: "form-control" %>
+            
+            <%= f.label :basic_time, class: "label-#{yield(:class_text)}" %>
+            <%= f.time_field :basic_time, class: "form-control" %>
 
-              <%= f.label :work_time, class: "label-#{yield(:class_text)}" %>
-              <%= f.time_field :work_time, class: "form-control" %>
-            
-              <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
-            <% end %>
+            <%= f.label :work_time, class: "label-#{yield(:class_text)}" %>
+            <%= f.time_field :work_time, class: "form-control" %>
+          
+            <%= f.submit yield(:button_text), class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
+          <% end %>
+      </td>
           </div>
         <% end %>
       </td>
