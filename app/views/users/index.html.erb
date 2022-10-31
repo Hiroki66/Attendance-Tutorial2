@@ -12,13 +12,13 @@
     <% end %>
   </div>
   
-  <%= form_tag import_users_path, multipart: true do %>
-    <%= file_field_tag :file, accept: '.csv' %>
-    <%= submit_tag "インポート", class: "btn-primary" %>
-  <% end %>
 
 </div>
 <%= will_paginate %>
+<%= form_tag import_users_path, multipart: true do %>
+  <%= file_field_tag :file, accept: '.csv' %>
+  <%= submit_tag "インポート", class: "btn-primary" %>
+<% end %>
 <table class="table table-condensed table-hover" id="table-users">
   <% @users.each do |user| %>
   <thead>
@@ -34,10 +34,10 @@
         <% if current_user.admin && !current_user?(user) %>
           <%= link_to "削除", user, method: :delete,
               data: { confirm: "削除してよろしいですか？" }, class: "btn btn-primary" %>
-  <br></br>
+        <br></br>
         <button class="btn btn-primary btn-lg" data-toggle="collapse" data-target="#user-<%= user.id %>">編集</button>
         <div id="user-<%= user.id %>" class="collapse">
-          <%= form_with(model: user, local: true) do |f| %>
+          <%= form_with(model: user, local: true, method: :patch) do |f| %>
 
             <%= f.label :name, class: "label-#{yield(:class_text)}" %>
             <%= f.text_field :name, class: "form-control" %>

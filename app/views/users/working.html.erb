@@ -8,21 +8,15 @@
   <table class="table table-condensed table-hover" id="table-users">
     <thead>
       <tr>
-        <th></th>
+        <th><%= User.human_attribute_name :employee_number %></th>
         <th><%= User.human_attribute_name :name %></th>
       </tr>
     </thead>
     
     <% @users.each do |user| %>
       <tr>
-        <td></td>
-        <td>
-          <% if current_user.admin? %>
-            <%= link_to user.name, user %>
-          <% else %>
-            <%= user.name %>
-          <% end %>
-        </td>
+        <td><%= user.employee_number %></td>
+        <td><%= user.name %></td>
       </tr>
     <% end %>
   </table>

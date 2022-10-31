@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
   before_action :logged_in_user, only: [:index, :show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
-  before_action :correct_user, only: [:edit, :update]
+  # before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info]
   before_action :set_one_month, only: :show
-  before_action :admin_or_correct_user, only: :show
+  before_action :admin_or_correct_user, only: [:show, :edit, :update]
   
   def attendances
     Attendance.where(user_id: self.id)
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   end
   
   def working
-    @users = User.paginate(page: params[:page])
+    @users = User.joins(:attendances).where(attendances: {worked_on: Date.today, finished_at: nil}).paginate(page: params[:page])
     @text = "出勤中社員一覧"
   end
 
